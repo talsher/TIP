@@ -1,0 +1,75 @@
+<div>
+    <br>
+    <h2>Choose uploaded page to train</h2>
+    <mat-card>
+      
+      <mat-divider></mat-divider>
+      <table width="100%" mat-table [dataSource]="page">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element">{{element.name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="img">
+            <th mat-header-cell *matHeaderCellDef>Img</th>
+            <td mat-cell  *matCellDef="let element">
+                <img [src]="img" width="300px" height="300px"
+                alt="Place image title"
+                *ngIf="!isImageLoading; else ''" />
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="archi">
+            <th mat-header-cell *matHeaderCellDef [hidden]="trainStatus != ''">archi</th>
+            <td mat-cell *matCellDef="let element"  [hidden]="trainStatus != ''">
+                <mat-selection-list #listarchi>
+                      <mat-list-option *ngFor="let archi of element.archi_list" [value]="archi"  checkboxPosition="before">
+                        {{archi}}
+                      </mat-list-option>
+                  </mat-selection-list>
+            </td>
+          </ng-container>
+        <ng-container matColumnDef="models">
+          <th mat-header-cell *matHeaderCellDef [hidden]="trainStatus != ''">models</th>
+          <td mat-cell *matCellDef="let element" [hidden]="trainStatus != ''">
+              <mat-selection-list #listmodels>
+                <mat-list-option [value]="none" checkboxPosition="before">None</mat-list-option>
+                  <div *ngFor="let model of element.models" [hidden]="selectedArchi!==model.archi">
+                    <mat-list-option [value]="model.name" #modelOption  checkboxPosition="before">
+                      {{model.name}}
+                    </mat-list-option>
+                  </div>
+              </mat-selection-list>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef [hidden]="trainStatus != ''">Actions</th>
+          <td mat-cell *matCellDef="let element" [hidden]="trainStatus != ''">
+            <button mat-button color="primary" (click)="trainPage(element._id)">Train</button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="trainImg">
+          <th mat-header-cell *matHeaderCellDef [hidden]="!isTrainImage">Train result</th>
+          <td mat-cell  *matCellDef="let element" [hidden]="!isTrainImage">
+              <img [src]="trainImg" width="400px" height="200px" style="width: 100%;height: 100%;"
+              alt="Place image title"
+              *ngIf="isTrainImage; else ''" />
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="saveModel">
+          <th mat-header-cell *matHeaderCellDef [hidden]="!isTrainImage || trainDone">Train result</th>
+          <td mat-cell  *matCellDef="let element" [hidden]="!isTrainImage || trainDone">
+            <input type="text" (keyup)="modelNameChanged($event)" placeholder="Model name" />
+            <button mat-button color="primary" (click)="saveModel(model_id)">Save</button>
+            <button mat-button color="primary" (click)="discardModel(model_id)">Discard</button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="trainStatus">
+            <th mat-header-cell *matHeaderCellDef>Train status</th>
+            <td mat-cell *matCellDef="let element">
+              {{trainStatus}}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns:displayedColumns;"></tr>
+      </table>
+    </mat-card>
+  </div>
