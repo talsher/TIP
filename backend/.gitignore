@@ -1,4 +1,5 @@
 # tmp files
 /tmp/*
-#AI models
+#AI models and tmp data
 /AI/models/*
+/AI/data/*
