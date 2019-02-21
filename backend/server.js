@@ -112,25 +112,17 @@ router.route('/model/save').post((req, res) => {
             if (!model){
                 res.status(400).send('model not found');
             } else {
-                let new_path = `AI/models/${path.basename(model.data_file)}`;
-                fs.rename(model.data_file, new_path, (err) => {
-                    if(err){
-                        res.status(500).send(err);
-                    } else {
-                        model.data_file = new_path;
-                        model.name = req.body.model_name;
-                        model.is_saved = true;
-                        model.save()
-                        .then((page) => {
-                            console.log("model saved");
-                            res.status(200).json({res: "saved successfully"});
-                        })
-                        .catch((err) => {
-                            console.log("error save model");
-                            console.log(err);
-                            res.status(400).send(`failed! ${err}`);
-                        });
-                    }
+                model.name = req.body.model_name;
+                model.is_saved = true;
+                model.save()
+                .then((page) => {
+                    console.log("model saved");
+                    res.status(200).json({res: "saved successfully"});
+                })
+                .catch((err) => {
+                    console.log("error save model");
+                    console.log(err);
+                    res.status(400).send(`failed! ${err}`);
                 });
             }
         }
@@ -196,9 +188,9 @@ router.route('/train').post((req, res) => {
                         console.log(script_res);
                         let res_arr = script_res.split('\n');
                         console.log(res_arr);
-                        let model_path = res_arr[0]; 
-                        let img = fs.readFileSync(res_arr[1]);
-                        let classes_data = JSON.parse(fs.readFileSync(res_arr[2]));
+                        let model_path = `AI/models/${res_arr[0]}`; 
+                        let img = fs.readFileSync(`AI/data/${res_arr[1]}`);
+                        let classes_data = JSON.parse(fs.readFileSync(`AI/data/${res_arr[2]}`));
 
                         // save the model until the user decide what to do with it
                         let model = new Model({
