@@ -2,4 +2,4 @@
 /tmp/*
 #AI models and tmp data
 /AI/models/*
-#/AI/data/*
+/AI/data/*
