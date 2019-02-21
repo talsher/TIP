@@ -1,5 +1,2 @@
-# tmp files
+# ignore tmp files
 /tmp/*
-#AI models and tmp data
-/AI/models/*
-/AI/data/*
