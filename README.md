@@ -2,11 +2,14 @@
 Image processing mini project
 
 # info
-nodejs info:
+## nodejs info:
 npm version: 6.4.1
 requested libraries: see node_moduels
 
-python info:
+## mongo info:
+MongoDB shell version v3.4.18
+
+## python info:
 version: python3
 requested libraries: 
 
