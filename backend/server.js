@@ -1,14 +1,14 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import multer from 'multer';
-import {readFileSync, writeFileSync, rename, unlinkSync} from 'fs';
-import {basename} from 'path';
-import Page from './models/page'
-import Model from './models/model'
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+const Page = require('./models/page');
+const Model = require('./models/model');
+const TrainModel = require('./AI/train');
 
-import TrainModel from './AI/train'
 
 const app = express();
 const router = express.Router();
@@ -24,7 +24,8 @@ const archi_list = ["vgg16", "vgg19"]
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://192.168.56.101:27017/pages');
+//mongoose.connect('mongodb://192.168.56.101:27017/pages');
+mongoose.connect('mongodb://132.72.23.63:3011/pages');
 
 const db_connection = mongoose.connection;
 
@@ -111,8 +112,8 @@ router.route('/model/save').post((req, res) => {
             if (!model){
                 res.status(400).send('model not found');
             } else {
-                let new_path = `AI/models/${basename(model.data_file)}`;
-                rename(model.data_file, new_path, (err) => {
+                let new_path = `AI/models/${path.basename(model.data_file)}`;
+                fs.rename(model.data_file, new_path, (err) => {
                     if(err){
                         res.status(500).send(err);
                     } else {
@@ -144,7 +145,7 @@ router.route('/model/discard').post((req, res) => {
             if(!model) {
                 res.status(400).send('model not found');
             } else {
-                unlinkSync(model.data_file);
+                fs.unlinkSync(model.data_file);
                 model.remove()
                 .then((model) => {
                     console.log("model demoved");
@@ -196,8 +197,8 @@ router.route('/train').post((req, res) => {
                         let res_arr = script_res.split('\n');
                         console.log(res_arr);
                         let model_path = res_arr[0]; 
-                        let img = readFileSync(res_arr[1]);
-                        let classes_data = JSON.parse(readFileSync(res_arr[2]));
+                        let img = fs.readFileSync(res_arr[1]);
+                        let classes_data = JSON.parse(fs.readFileSync(res_arr[2]));
 
                         // save the model until the user decide what to do with it
                         let model = new Model({
@@ -239,8 +240,8 @@ router.route('/insert').post(upload, (req, res) => {
     let xml_path = req.files.xml[0].path;
     let page_json = {
         name: req.body.name,
-        img: readFileSync(img_path),
-        xml: readFileSync(xml_path)
+        img: fs.readFileSync(img_path),
+        xml: fs.readFileSync(xml_path)
     }
     let page = new Page(page_json);
 

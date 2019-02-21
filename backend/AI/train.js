@@ -1,21 +1,21 @@
-import {readFileSync, writeFileSync} from 'fs';
-import { tmpNameSync } from 'tmp';
-import { spawn } from 'child_process';
+const fs = require('fs');
+const tmp = require('tmp');
+const child_process = require('child_process');
 
 // Train the model and return result graph
 function TrainModel(img, xml, archi, modelFileLocation, pretrain_words) {
-    let img_name = `${tmpNameSync()}.jpg`;
-    let xml_name = `${tmpNameSync()}.xml`;
-    let words_json_file = `${tmpNameSync()}.json`;
-    writeFileSync(img_name, img);
-    writeFileSync(xml_name, xml);
-    writeFileSync(words_json_file, JSON.stringify(pretrain_words));
+    let img_name = `${tmp.tmpNameSync()}.jpg`;
+    let xml_name = `${tmp.tmpNameSync()}.xml`;
+    let words_json_file = `${tmp.tmpNameSync()}.json`;
+    fs.writeFileSync(img_name, img);
+    fs.writeFileSync(xml_name, xml);
+    fs.writeFileSync(words_json_file, JSON.stringify(pretrain_words));
     console.log(words_json_file)
     let stdout = "";
     
     let pyPromise = new Promise(function(success, nosuccess) {
         try {
-            const pythonProcess = spawn('python3',["script.py", archi, img_name, xml_name, modelFileLocation, words_json_file]);
+            const pythonProcess = child_process.spawn('python3',["script.py", archi, img_name, xml_name, modelFileLocation, words_json_file]);
 
             pythonProcess.stdout.on('data', function(data) {
                 stdout += data.toString();
@@ -46,4 +46,4 @@ function TrainModel(img, xml, archi, modelFileLocation, pretrain_words) {
     };
 }
 
-export default TrainModel;
+module.exports = TrainModel;

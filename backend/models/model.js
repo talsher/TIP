@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-let Model = new Schema({
+let ModelScheme = new Schema({
     name: String,
     page_id: String,
     archi: String,
@@ -14,4 +14,4 @@ let Model = new Schema({
 });
 
 
-export default mongoose.model('Model', Model);
+module.exports =  mongoose.model('Model', ModelScheme);

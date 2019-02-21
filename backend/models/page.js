@@ -1,12 +1,13 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-let Page = new Schema({
+var PageScheme = new Schema({
     name: String,
     img: Buffer,
     xml: Buffer
     
 });
 
-export default mongoose.model('Page', Page);
+var Page = mongoose.model('Page', PageScheme);
+module.exports = Page;

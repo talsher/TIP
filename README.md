@@ -1,9 +1,17 @@
 # TIP
 Image processing mini project
 
+# How to start
+## frontend
+ng serve --host <ip>
+## nodejs
+node server.js
+## mongoose
+mongod
 # info
 ## nodejs info:
 npm version: 6.4.1
+nodejs versio v8.15.0
 requested libraries: see node_moduels
 
 ## mongo info:
