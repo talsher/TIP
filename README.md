@@ -9,10 +9,10 @@
   ## mongoose
     mongod
   ## docker trainer
-    **build trainer image**
+   __build trainer image__
       run from backend/AI folder
       sudo docker build . -t trainer:latest
-    **run container**
+   __run container__
       sudo docker run -t -d --name test_trainer -v $(pwd)/data:/AI/data -v $(pwd)/models:/AI/models trainer
 
 # info
