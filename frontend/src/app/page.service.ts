@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PageService {
 
-  uri = 'http://192.168.56.101:4000'
+  uri = 'http://localhost:4000'
   constructor(private http: HttpClient) { }
 
   getPages() {
